@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/blog/:id" element={<Blog />} />
         <Route>
-          <Route path="admin" element={<Layout />}>
+          <Route path="admin" element={true ? <Layout /> : <Login />}>
             <Route index element={<Dashboard />} />
             <Route path="add" element={<AddBlog />} />
             <Route path="list" element={<ListBlog />} />
