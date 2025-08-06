@@ -8,7 +8,7 @@ import ListBlog from './pages/admin/ListBlog.jsx'
 import AddBlog from './pages/admin/AddBlog.jsx'
 import Comments from './pages/admin/Comments.jsx'
 import Login from './components/admin/Login.jsx'
-
+import 'quill/dist/quill.snow.css'
 
 export default function App() {
   return (
