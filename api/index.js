@@ -1,7 +1,17 @@
 import express from 'express'
-import 'dotenv/config'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 import cors from 'cors'
 
+
+dotenv.config();
+
+
+mongoose.connect(process.env.MONGO).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((err) => {
+  console.error('MongoDB connection error:', err);
+});
 const app = express();
 
 app.use(cors())
@@ -11,11 +21,19 @@ app.get('/', (req, res) => {
     res.send('Api is working')
 })
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, ()=>{
-    console.log('Server is running on port ' +PORT)
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000')
 })
 
+// app.use((err, req, res, next)=>{
+//   const statusCode = err.statusCode || 500;
+//   const message = err.message || 'Internal server error';
+//   return res.status(statusCode).json({
+//     success: false,
+//     statusCode,
+//     message,
+//   })
+// })
 
 export default app;
