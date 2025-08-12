@@ -2,6 +2,8 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import adminRouter from './routes/admin.routes.js';
+import blogRouter from './routes/blog.routes.js';
 
 
 dotenv.config();
@@ -20,6 +22,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send('Api is working')
 })
+app.use('/api/admin', adminRouter)
+app.use('/api/blog', blogRouter)
 
 
 app.listen(3000, ()=>{
