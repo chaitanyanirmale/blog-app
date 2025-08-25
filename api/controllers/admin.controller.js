@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import blog from '../models/blog.model.js';
 import Comment from '../models/comment.model.js';
 
-export const adminLogin = (req, res) =>{
+export const adminLogin = async (req, res) =>{
     try {
         const {email, password} = req.body;
         if(email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD){
