@@ -6,7 +6,7 @@ export default function ListBlog() {
 
   const [blogs, setBlogs] = useState([])
   const fetchBlogs = async () => {
-    setBlogs(blog_data)
+    setBlogs(blogs)
   }
   useEffect(()=>{
     fetchBlogs()

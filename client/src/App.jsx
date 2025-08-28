@@ -14,7 +14,8 @@ import { useAppContext } from './context/AppContext.jsx'
 
 export default function App() {
 
-  const {token} = useAppContext().value;
+  const {token} = useAppContext();
+  
   return (
     <div>
       <Toaster />

@@ -8,7 +8,9 @@ export default function BlogList () {
     const [menu, setMenu] = useState('All');
     const {blogs, input} = useAppContext();
     const filteredBlogs = () => {
-        if(!input) return blogs;
+        if(input === ''){
+            return blogs;
+        }
         return blogs.filter((blog) => blog.title.toLowerCase().includes(input.toLowerCase()) || blog.category.toLowerCase().includes(input.toLowerCase()));
     }
   return (

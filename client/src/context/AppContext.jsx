@@ -9,41 +9,34 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [token, setToken] = useState(null);
-    const [blogs, setBlog] = useState(null);
-    const [input, setInput] = useState(null);
+    const [token, setToken] = useState('');
+    const [blogs, setBlogs] = useState([]);
+    const [input, setInput] = useState('');
 
     const fetchBlogs = async () => {
         try {
             const {data} = await axios.get('/api/blog/all');
-            data.success ? setBlog(data.blogs) : toast.error(data.message);
+            data.success ? setBlogs(data.blogs) : toast.error(data.message);
 
         } catch (error) {
             toast.error(error.message);
         }
     }
-    
-
 
     useEffect(() => {
         fetchBlogs();
         const token = localStorage.getItem('token');
         if (token) {
             setToken(token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        } else {
-            navigate('/admin/login');
+            axios.defaults.headers.common['Authorization'] = `${token}`;
         }
     }, []);
 
     const value = {
-        axios, navigate,
-        token, setToken,
-        blogs, setBlog,
-        input, setInput
+        axios, navigate, token, setToken, blogs, setBlogs, input, setInput
     };
     return (
-        <AppContext.Provider value={{value}}>
+        <AppContext.Provider value={value}>
             {children}
         </AppContext.Provider>
     )

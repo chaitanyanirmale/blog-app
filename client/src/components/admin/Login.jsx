@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-
+import axios from 'axios';
 export default function Login() {
 
-  const {axios, navigate, setToken} = useAppContext().value;
+  const {setToken} = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = async (e) =>{
@@ -14,13 +14,12 @@ export default function Login() {
       if(data.success){
         setToken(data.token);
         localStorage.setItem('token', data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-        navigate('/admin');
+        axios.defaults.headers.common['Authorization'] = data.token;
       }else{
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(data.message);
+      toast.error(error.message);
     }
   }
   
