@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { assets, blogCategories } from '../../assets/assets'
 import Quill from 'quill';
 import { useAppContext } from '../../context/AppContext';
+import { parse } from 'marked'
 
 
 
 export default function AddBlog() {
   const {axios} = useAppContext();
   const [isAdding, setIsAdding] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [loading, setLoading] = useState(false);
   const editorRef = useRef(null);
   const quillRef = useRef(null);
   const [image, setImage] = useState(false);
@@ -44,7 +47,22 @@ export default function AddBlog() {
   }
 
   const generateContent = async (e) =>{
-    e.preventDefault();
+    if(!title){
+      return toast.error("Please enter blog title first")
+    }
+    try {
+      setIsGenerating(true);
+      const {data} = await axios.post('/api/blog/generate', {prompt: title});
+      if(data.success){
+        quillRef.current.root.innerHTML = parse(data.content);
+      }else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }finally{
+      setIsGenerating(false);
+    }
   }
 
   useEffect(()=>{
@@ -70,7 +88,7 @@ export default function AddBlog() {
         <p className='mt-4'>Blog Description</p>
           <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
             <div className="" ref={editorRef}></div>
-            <button type='button' onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-blue-500 px-4 py-1.5 rounded hover:underline cursor-pointer'>Generate with AI</button>
+            <button disabled={isGenerating} type='button' onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-blue-500 px-4 py-1.5 rounded hover:underline cursor-pointer'>{isGenerating ? 'Generating..' : 'Generate with AI'}</button>
           </div>
             <p className='mt-4'>Blog Description</p>
             <select onChange={(e)=> setCategory(e.target.value)} name="category" className='mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded'>
