@@ -65,10 +65,9 @@ export const getBlogById = async (req, res) =>{
 }
 export const deleteBlogById = async (req, res) =>{
     try {
-        const {id} = req.body;
-        await blog.findByIdAndDelete(id);
+        await blog.findByIdAndDelete(req.params.id);
         // Delete all comments associated with the blog
-        await Comment.deleteMany({blog: id});
+        await Comment.deleteMany(req.body.id);
         res.json({success:true, message: "Blog deleted successfully"})
     } catch (error) {
         res.json({success:false, message: error.message})  
@@ -77,8 +76,7 @@ export const deleteBlogById = async (req, res) =>{
 
 export const togglePublish = async (req, res) =>{
     try {
-        const {id} = req.body;
-        const blogData = await blog.findById(id);
+        const blogData = await blog.findById(req.body.id);
         blog.isPublished = !blogData.isPublished;
         await blogData.save();
          res.json({success:true, message: "Blog status updated"})

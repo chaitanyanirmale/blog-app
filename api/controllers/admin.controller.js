@@ -37,13 +37,13 @@ export const getAllComments = async (req, res) =>{
 export const getDashboard = async (req, res) =>{
     try {
         const recentBlogs = await blog.find({}).sort({createdAt: -1}).limit(5);
-        const totalBlogs = await blog.countDocuments();
-        const totalComments = await Comment.countDocuments();
+        const blogs = await blog.countDocuments();
+        const comments = await Comment.countDocuments();
         const drafts = await blog.countDocuments({isPublished: false});
         const dashboardData = {
             recentBlogs,
-            totalBlogs,
-            totalComments,
+            blogs,
+            comments,
             drafts
         }
         res.json({success: true, dashboardData})
