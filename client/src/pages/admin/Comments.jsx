@@ -6,7 +6,19 @@ export default function Comments() {
   const [comments, setComments] = useState([])
   const [filter, setFilter] = useState('Not Approved')
   const fetchComments = async() => {
-    setComments(comments_data);
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/api/comments"); 
+      if (data.success) {
+        setComments(data.comments);
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error.message);
+    } finally {
+      setLoading(false);
+    }
   }
   useEffect(()=>{
     fetchComments()

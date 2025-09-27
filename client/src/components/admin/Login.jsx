@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Dashboard from '../../pages/admin/Dashboard';
 export default function Login() {
 
   const {setToken} = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   const handleSubmit = async (e) =>{
     e.preventDefault();
     try {
@@ -15,6 +18,7 @@ export default function Login() {
         setToken(data.token);
         localStorage.setItem('token', data.token);
         axios.defaults.headers.common['Authorization'] = data.token;
+        navigate("/")
       }else{
         toast.error(data.message);
       }

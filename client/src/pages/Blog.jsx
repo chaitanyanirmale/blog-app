@@ -27,7 +27,7 @@ export default function Blog() {
   
   const fetchComments = async () => {
     try {
-      const {data} = await axios.get('/api/blog/comment', {blogId: id});
+      const {data} = await axios.get('/api/blog/comments', {blogId: id});
       if(data.success){
         setComments(data.comments);
       }else{
